@@ -1,31 +1,8 @@
-/**
- * Workout Log - Vanilla JavaScript
- */
-
 "use strict";
-
-// ─── Constants ───────────────────────────────────────────────────────────────
 
 const STORAGE_KEY = "workout-log-exercises-v1";
 
-
-// ─── State ───────────────────────────────────────────────────────────────────
-
-/** @type {Exercise[]} */
 let exercises = loadFromStorage();
-
-/**
- * @typedef {Object} Exercise
- * @property {string} id
- * @property {string} name
- * @property {string} muscleGroup
- * @property {number} weight
- * @property {number} reps
- * @property {number} sets
- * @property {string} date
- */
-
-// ─── DOM References ───────────────────────────────────────────────────────────
 
 const form = document.getElementById("workout-form");
 const inputName = document.getElementById("exercise-name");
@@ -45,19 +22,12 @@ const statSessions = document.getElementById("stat-sessions");
 const statVolume = document.getElementById("stat-volume");
 const statTopMuscle = document.getElementById("stat-top-muscle");
 
-// ─── Initialisation ──────────────────────────────────────────────────────────
-
-// Pre-fill today's date
 inputDate.value = todayISO();
 
-// Attach listeners
 form.addEventListener("submit", handleFormSubmit);
 filterSelect.addEventListener("change", render);
 
-// Initial render
 render();
-
-// ─── Event Handlers ──────────────────────────────────────────────────────────
 
 function handleFormSubmit(e) {
   e.preventDefault();
@@ -69,7 +39,6 @@ function handleFormSubmit(e) {
   const sets = parseInt(inputSets.value, 10);
   const date = inputDate.value;
 
-  // Validation
   const error = validate({ name, muscleGroup, weight, reps, sets, date });
   if (error) {
     showError(error);
@@ -88,7 +57,7 @@ function handleFormSubmit(e) {
     date,
   };
 
-  exercises.unshift(exercise); // newest first
+  exercises.unshift(exercise);
   saveToStorage();
   render();
   form.reset();
@@ -100,8 +69,6 @@ function handleDelete(id) {
   saveToStorage();
   render();
 }
-
-// ─── Render ───────────────────────────────────────────────────────────────────
 
 function render() {
   renderList();
@@ -115,7 +82,6 @@ function renderList() {
       ? exercises
       : exercises.filter((ex) => ex.muscleGroup === filter);
 
-  // Clear existing cards (keep empty-state element)
   Array.from(workoutList.querySelectorAll(".exercise-card")).forEach((el) =>
     el.remove()
   );
@@ -168,16 +134,13 @@ function createExerciseCard(ex) {
 function renderStats() {
   const total = exercises.length;
 
-  // Unique training days
   const uniqueDays = new Set(exercises.map((ex) => ex.date)).size;
 
-  // Total volume = sum of (weight × reps × sets) for every exercise
   const totalVolume = exercises.reduce(
     (sum, ex) => sum + ex.weight * ex.reps * ex.sets,
     0
   );
 
-  // Most trained muscle group
   const muscleCounts = exercises.reduce((acc, ex) => {
     acc[ex.muscleGroup] = (acc[ex.muscleGroup] || 0) + 1;
     return acc;
@@ -194,11 +157,6 @@ function renderStats() {
   statTopMuscle.textContent = topMuscle;
 }
 
-// ─── Validation ───────────────────────────────────────────────────────────────
-
-/**
- * Returns an error message string or null if valid.
- */
 function validate({ name, muscleGroup, weight, reps, sets, date }) {
   if (!name) return "Exercise name is required.";
   if (!muscleGroup) return "Please select a muscle group.";
@@ -209,8 +167,6 @@ function validate({ name, muscleGroup, weight, reps, sets, date }) {
   return null;
 }
 
-// ─── Error UI ────────────────────────────────────────────────────────────────
-
 function showError(message) {
   formError.textContent = message;
   formError.hidden = false;
@@ -220,8 +176,6 @@ function hideError() {
   formError.textContent = "";
   formError.hidden = true;
 }
-
-// ─── Storage ─────────────────────────────────────────────────────────────────
 
 function loadFromStorage() {
   try {
@@ -238,8 +192,6 @@ function saveToStorage() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(exercises));
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 function todayISO() {
   return new Date().toISOString().split("T")[0];
 }
@@ -250,7 +202,6 @@ function formatDate(isoDate) {
   return `${day}/${month}/${year}`;
 }
 
-/** Prevent XSS when inserting user content via innerHTML */
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, "&amp;")
