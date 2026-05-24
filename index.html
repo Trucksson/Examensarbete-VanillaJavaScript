@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Workout Logger — Vanilla JS</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Workout Logger</h1>
+      <p class="subtitle">Vanilla JavaScript Version</p>
+    </header>
+
+    <main>
+      <!-- Add Workout Form -->
+      <section class="card" id="form-section">
+        <h2>Add Exercise</h2>
+        <form id="workout-form" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="exercise-name">Exercise Name</label>
+              <input
+                type="text"
+                id="exercise-name"
+                placeholder="e.g. Bench Press"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="muscle-group">Muscle Group</label>
+              <select id="muscle-group" required>
+                <option value="">Select group…</option>
+                <option value="Chest">Chest</option>
+                <option value="Back">Back</option>
+                <option value="Shoulders">Shoulders</option>
+                <option value="Arms">Arms</option>
+                <option value="Legs">Legs</option>
+                <option value="Core">Core</option>
+                <option value="Cardio">Cardio</option>
+                <option value="Full Body">Full Body</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="weight">Weight (kg)</label>
+              <input
+                type="number"
+                id="weight"
+                min="0"
+                step="0.5"
+                placeholder="e.g. 80"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="reps">Reps</label>
+              <input
+                type="number"
+                id="reps"
+                min="1"
+                placeholder="e.g. 10"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="sets">Sets</label>
+              <input
+                type="number"
+                id="sets"
+                min="1"
+                placeholder="e.g. 3"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" required />
+            </div>
+          </div>
+
+          <div id="form-error" class="form-error" hidden></div>
+
+          <button type="submit" class="btn btn-primary">Add Exercise</button>
+        </form>
+      </section>
+
+      <!-- Statistics -->
+      <section class="card" id="stats-section">
+        <h2>Statistics</h2>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <span class="stat-value" id="stat-total">0</span>
+            <span class="stat-label">Total Exercises</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-value" id="stat-sessions">0</span>
+            <span class="stat-label">Training Days</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-value" id="stat-volume">0</span>
+            <span class="stat-label">Total Volume (kg)</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-value" id="stat-top-muscle">—</span>
+            <span class="stat-label">Most Trained</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Log / Filter -->
+      <section class="card" id="log-section">
+        <div class="log-header">
+          <h2>Exercise Log</h2>
+          <div class="filter-row">
+            <label for="filter-muscle">Filter:</label>
+            <select id="filter-muscle">
+              <option value="all">All Groups</option>
+              <option value="Chest">Chest</option>
+              <option value="Back">Back</option>
+              <option value="Shoulders">Shoulders</option>
+              <option value="Arms">Arms</option>
+              <option value="Legs">Legs</option>
+              <option value="Core">Core</option>
+              <option value="Cardio">Cardio</option>
+              <option value="Full Body">Full Body</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="workout-list">
+          <p class="empty-state" id="empty-state">
+            No exercises logged yet. Add your first one above!
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Data is saved locally in your browser via localStorage.</p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
